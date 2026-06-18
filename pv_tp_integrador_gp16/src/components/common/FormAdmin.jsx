@@ -35,10 +35,8 @@ const Login = () => {
         const errores = {};
 
         if (!admin.trim()){
-            errores.admin = "Es obligatorio ingresar su correo";
-        } else if (!/^[\d]{1,3}\.?[\d]{3}\.?[\d]{3}$/.test(admin)){
-            errores.admin = "El DNI no tiene un formato válido";
-        }
+            errores.admin = "Es obligatorio ingresar su nombre";
+        } 
 
         if (!rol.trim()){
             errores.rol = "Es obligatorio seleccionar un rol";
