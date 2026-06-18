@@ -61,7 +61,7 @@ const Login = () => {
         setLoading(true);
         
         try {
-            const encontrado = await usuariosService.login(admin, rol);
+            const encontrado = await adminService.login(admin, rol);
             guardarSesion(encontrado);
             navigate('/inicio');
         } catch (err) {
@@ -71,8 +71,6 @@ const Login = () => {
 
         }
     };
-
-    const formularioIncompleto = !admin.trim() || !rol.trim();
 
     return (
         <Container className="mt-4">
@@ -89,7 +87,7 @@ const Login = () => {
                                 onChange={manejarCambio}
                             />
                             {erroresAtributo.admin && (
-                                <p style={{color: 'white', fontSize: '0.875em'}}>
+                                <p style={{color: 'red', fontSize: '0.875em'}}>
                                     {erroresAtributo.admin}
                                 </p>
                             )}
@@ -106,16 +104,15 @@ const Login = () => {
                                 <option value="gerente">Gerente</option>
                             </Form.Select>
                             {erroresAtributo.rol && (
-                                <p style={{color: 'white', fontSize: '0.875em'}}>
+                                <p style={{color: 'red', fontSize: '0.875em'}}>
                                     {erroresAtributo.rol}
                                 </p>
                             )}
                         </Form.Group>
                         <Button
                             type="submit"
-                            disabled={loading || formularioIncompleto}
                         >
-                            {loading ? 'Verificando...' : 'Ingresar'}
+                            Ingresar
                         </Button>
                     </Form>
                 </Card.Body>
