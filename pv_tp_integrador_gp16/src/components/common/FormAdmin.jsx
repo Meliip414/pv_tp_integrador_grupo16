@@ -98,8 +98,8 @@ const Login = () => {
                                 onChange={manejarCambio}
                             >
                                 <option value="">Seleccione un rol</option>
-                                <option value="soporte">Soporte</option>
-                                <option value="gerente">Gerente</option>
+                                <option value="Soporte">Soporte</option>
+                                <option value="Gerencia">Gerencia</option>
                             </Form.Select>
                             {erroresAtributo.rol && (
                                 <p style={{color: 'red', fontSize: '0.875em'}}>
