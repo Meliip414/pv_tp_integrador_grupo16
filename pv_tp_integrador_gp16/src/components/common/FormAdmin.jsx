@@ -109,8 +109,9 @@ const Login = () => {
                         </Form.Group>
                         <Button
                             type="submit"
+                            disabled={loading}
                         >
-                            Ingresar
+                            {loading ? 'Verificando...' : 'Ingresar'}
                         </Button>
                     </Form>
                 </Card.Body>
