@@ -20,7 +20,7 @@ function Navegacion() {
 
             <Nav.Link
               as={Link}
-              to="/dashboard"
+              to="/"
             >
               Inicio
             </Nav.Link>
