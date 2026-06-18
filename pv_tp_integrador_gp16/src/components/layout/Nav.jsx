@@ -10,7 +10,7 @@ function Navegacion() {
       <Container>
 
         <Navbar.Brand as={Link} to="/">
-          Panel de Clientes
+          Corporación Acme
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
