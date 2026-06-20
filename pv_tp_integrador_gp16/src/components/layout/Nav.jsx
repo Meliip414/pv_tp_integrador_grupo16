@@ -2,9 +2,19 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAdmin } from '../hook/useAdmin';
+
 
 
 function Navegacion() {
+   const { cerrarSesion } = useAdmin();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    cerrarSesion();
+    navigate('/');
+  };
   return (
     <Navbar expand="lg" bg="light">
       <Container>
@@ -31,6 +41,12 @@ function Navegacion() {
             >
               Clientes
             </Nav.Link>
+
+             <Nav.Link
+              onClick={logout}>
+             Cerrar Sesión
+
+             </Nav.Link>
 
           </Nav>
         </Navbar.Collapse>
