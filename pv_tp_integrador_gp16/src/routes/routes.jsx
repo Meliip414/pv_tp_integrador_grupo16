@@ -13,16 +13,16 @@ const routes = createBrowserRouter([
         errorElement: <h1>404 NOT FOUND</h1>,
         children: [
             { index: true, element: <Login /> },
-            children: [
-                {
-                path:'Clientes',
-              {  element: (<RutaProtegida><Clientes /></RutaProtegida>)},
-            ]
- ] },
-        
-            
-        
-    
+            {
+                path: 'Clientes',
+                element: (<RutaProtegida><Clientes /></RutaProtegida>),
+            },
+        ],
+    },
+
+
+
+
 ]);
 
 export default routes;

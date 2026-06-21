@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useAdmin } from '../hook/useAdmin';
+import { useAdmin } from '../../hook/useAdmin';
 
 
 
@@ -30,16 +30,9 @@ function Navegacion() {
 
             <Nav.Link
               as={Link}
-              to="/"
-            >
-              Inicio
-            </Nav.Link>
-
-            <Nav.Link
-              as={Link}
               to="/clientes"
             >
-              Clientes
+              Inicio
             </Nav.Link>
 
              <Nav.Link
