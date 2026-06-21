@@ -3,7 +3,7 @@ export const AdminContext = createContext(null);
 
 export const AdminProvider = ({ children }) => {
 
-  const [AdminActivo, setAdminActivo] = useState(() => {
+  const [adminActivo, setAdminActivo] = useState(() => {
     const adminGuardado = localStorage.getItem("adminActivo");
 
   if (adminGuardado) {
