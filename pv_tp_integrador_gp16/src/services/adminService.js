@@ -1,8 +1,5 @@
+import admins from '../data/admins.json';
 const adminService = (() => {
-const admins= [
-        {nombre: 'Selena', sector: 'Soporte'},
-        {nombre: 'Miranda', sector: 'Gerencia'}
-    ];
 
     const login = (nombre, sector) => {
         return new Promise((resolve, reject) => {
