@@ -1,8 +1,8 @@
 import { Container, Form, Button, Card } from 'react-bootstrap';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import adminService from '../services/adminService';
-import { AdminContext } from '../context/AdminContext';
+import adminService from '../../services/adminService';
+import { AdminContext } from '../../context/AdminContext';
 
 const Login = () => {
     const { guardarSesion } = useContext(AdminContext);
@@ -61,7 +61,7 @@ const Login = () => {
         try {
             const encontrado = await adminService.login(admin, rol);
             guardarSesion(encontrado);
-            navigate('/inicio');
+            navigate('/Clientes');
         } catch (err) {
             console.log(err.message);
         } finally {
