@@ -1,20 +1,16 @@
 import { Outlet } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import Navegacion from "./components/layout/Nav";
+import Header from "./components/layout/Header";
+
 const App = () => {
   return (
     <Container>
-      <header className="mt-3">
-        <h1>trabajo final</h1>
-      </header>
-
-      <Navegacion />
-
-            <main>
-                <Outlet />
-            </main>
-        </Container>
-    );
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </Container>
+  );
 
 };
 

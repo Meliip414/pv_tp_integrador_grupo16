@@ -1,5 +1,5 @@
 import { Container, Row, Col, Badge } from 'react-bootstrap';
-import Login from '../components/Login';
+import FormAdmin from '../components/common/FormAdmin';
 
 const Inicio = () => {
     return (
