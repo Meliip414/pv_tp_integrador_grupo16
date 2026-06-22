@@ -11,10 +11,24 @@ const clientesService = (() => {
         return datos;
     };
 
+    const agregarClientes = async (nuevoCliente) => {
+        const peticion = await fetch(URL,
+            {
+                method:"POST",
+                headers:{ "Content-Type":"application/json"},
+                body:JSON.stringify(nuevoCliente)
+            }
+        );
+        return await peticion.json();
+    }
+
+
+
     return {
-        listarTodosClientes
+        listarTodosClientes, agregarClientes
     };
 
 })();
+
 
 export default clientesService;
