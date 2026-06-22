@@ -8,7 +8,7 @@ import { useAdmin } from '../../hook/useAdmin';
 
 
 function Navegacion() {
-   const { cerrarSesion } = useAdmin();
+   const { adminActivo, cerrarSesion } = useAdmin();
   const navigate = useNavigate();
 
   const logout = () => {
@@ -19,8 +19,8 @@ function Navegacion() {
     <Navbar expand="lg" bg="light">
       <Container>
 
-        <Navbar.Brand as={Link} to="/">
-          Corporación Acme
+        <Navbar.Brand>
+          {adminActivo?.nombre} - {adminActivo?.sector}
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
