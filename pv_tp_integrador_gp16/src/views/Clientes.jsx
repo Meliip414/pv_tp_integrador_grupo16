@@ -15,9 +15,17 @@ const Clientes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [busqueda, setBusqueda] = useState("");
-    const [mensajeActividad, setMensajeActividad] = useState("");
-    const [actualizacion, setActualizacion] = useState(null);
     const navigate = useNavigate();
+
+    const leerRegistro = () => JSON.parse(localStorage.getItem("registroActividad")) || {};
+
+    const [mensajeActividad, setMensajeActividad] = useState(() => leerRegistro().mensaje || "");
+    const [actualizacion, setActualizacion] = useState(() => {
+        const fecha = leerRegistro().fecha;
+        return fecha ? new Date(fecha) : null;
+    });
+
+
 
     const cargarClientes = async () => {
         try {
@@ -106,8 +114,13 @@ const Clientes = () => {
 
 
     const registrarActividad = (mensaje) => {
+        const fecha = new Date();
         setMensajeActividad(mensaje);
-        setActualizacion(new Date());
+        setActualizacion(fecha);
+        localStorage.setItem(
+            "registroActividad",
+            JSON.stringify({ mensaje, fecha })
+        );
     };
 
     const manejarClienteCreado = (clienteCreado) => {
@@ -130,7 +143,7 @@ const Clientes = () => {
 
         registrarActividad(`Cliente ${clienteCreado.name.firstname} ${clienteCreado.name.lastname} agregado correctamente`);
         cargarClientes();
-        
+
     };
 
     const clientesFiltrados = clientes.filter((cliente) => (

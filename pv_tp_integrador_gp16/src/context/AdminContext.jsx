@@ -27,6 +27,7 @@ export const AdminProvider = ({ children }) => {
   const cerrarSesion = () => {
     localStorage.removeItem("clientesAgregados");
     localStorage.removeItem("clientesEliminados");
+    localStorage.removeItem("registroActividad");
     setAdminActivo(null);
   };
 
