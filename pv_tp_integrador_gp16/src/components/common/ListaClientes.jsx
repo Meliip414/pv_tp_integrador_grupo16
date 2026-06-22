@@ -46,6 +46,7 @@ const ListaClientes = ({
                 </Table>
             </TableContainer>
         </Paper>
+       
     );
 };
 

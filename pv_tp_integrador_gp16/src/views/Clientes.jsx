@@ -61,6 +61,7 @@ const Clientes = () => {
     };
 
     const verDetalle = (id) => {
+    console.log("Navegando a:", id);
     navigate('/clientes/' + id);
 };
    
