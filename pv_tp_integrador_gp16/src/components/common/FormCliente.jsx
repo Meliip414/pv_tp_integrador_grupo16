@@ -88,6 +88,9 @@ const FormCliente = () => {
         
             const datosDevueltos = await respuesta.json();
             if (respuesta.ok) {
+                const ultimoIdAsignado = Number(localStorage.getItem('ultimoIdCliente')) || 0;
+                const nuevoIdSimulado = ultimoIdAsignado + 1;
+                localStorage.setItem('ultimoIdCliente', nuevoIdSimulado);
                 setExito(`Cliente creado con éxito. ID: ${datosDevueltos.id}`);
                 setNombre(''); setApellido(''); setEmail(''); setTelefono(''); setCiudad('');
             }
