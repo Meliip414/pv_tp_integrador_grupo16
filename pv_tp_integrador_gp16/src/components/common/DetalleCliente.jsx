@@ -56,26 +56,31 @@ const DetalleCliente = () => {
     }
 
     return (
-        <Card className="border-0 bg-light p-3" style={{ minWidth: '280px' }}>
-            <Card.Body className="p-2">
-                <p className="mb-2"><strong>ID:</strong> {cliente.id}</p>
-                <p className="mb-2"><strong>Nombre:</strong> {cliente.name?.firstname}</p>
-                <p className="mb-2"><strong>Apellido:</strong> {cliente.name?.lastname}</p>
-                <p className="mb-2"><strong>Email:</strong> {cliente.email}</p>
-                <p className="mb-2"><strong>Teléfono:</strong> {cliente.phone}</p>
-                <p className="mb-3"><strong>Ciudad:</strong> {cliente.address?.city}</p>
+    <Card className="border-0 bg-light p-3" style={{ minWidth: '280px' }}>
+        <Card.Body className="p-2">
+            <p className="mb-2"><strong>ID:</strong> {cliente.id}</p>
+            <p className="mb-2"><strong>Nombre:</strong> {cliente.name?.firstname}</p>
+            <p className="mb-2"><strong>Apellido:</strong> {cliente.name?.lastname}</p>
+            <p className="mb-2"><strong>Email:</strong> {cliente.email}</p>
+            <p className="mb-2"><strong>Teléfono:</strong> {cliente.phone}</p>
+            
+            <p className="mb-2"><strong>Ciudad:</strong> {cliente.address?.city}</p>
+            <p className="mb-2"><strong>Calle:</strong> {cliente.address?.street}</p>
+            <p className="mb-2"><strong>Número:</strong> {cliente.address?.number}</p>
+            <p className="mb-3"><strong>Código Postal:</strong> {cliente.address?.zipcode}</p>
 
-                <Button 
-                    variant="outline-secondary" 
-                    size="sm" 
-                    type="button" 
-                    onClick={() => navigate(-1)}
-                >
-                    Cerrar
-                </Button>
-            </Card.Body>
-        </Card>
+            <Button
+                variant="outline-secondary"
+                size="sm"
+                type="button"
+                onClick={() => navigate(-1)}
+            >
+                Cerrar
+            </Button>
+        </Card.Body>
+    </Card>
     );
+
 };
 
 export default DetalleCliente;

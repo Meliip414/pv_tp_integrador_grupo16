@@ -69,10 +69,10 @@ const FormCliente = () => {
                     lastname: apellido
                 },
                 address: {
-                    city: ciudad,
+                    city: ciudad,        
                     street: 'Calle Falsa',
-                    number: 123,
-                    zipcode: '12345',
+                    number: 123,           
+                    zipcode: '12345',      
                     geolocation: { lat: '-37.3159', long: '81.1496' }
                 },
                 phone: telefono
