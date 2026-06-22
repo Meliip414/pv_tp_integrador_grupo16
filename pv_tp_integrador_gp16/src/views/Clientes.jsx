@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import clientesService from '../services/clientesService';
 import FormCliente from '../components/common/FormCliente';
 import RegistroActividad from '../components/common/RegistroActividad';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
 
@@ -128,9 +128,9 @@ const Clientes = () => {
             ])
         );
 
-        registrarActividad(
-            "Cliente agregado correctamente"
-        );
+        registrarActividad(`Cliente ${clienteCreado.name.firstname} ${clienteCreado.name.lastname} agregado correctamente`);
+        cargarClientes();
+        
     };
 
     const clientesFiltrados = clientes.filter((cliente) => (
@@ -176,6 +176,9 @@ const Clientes = () => {
                     esGerente={adminActivo?.sector === "Gerencia"}
                 />
             )}
+            <div className="mt-3">
+                <Outlet />
+            </div>
             <RegistroActividad
                 actualizacion={actualizacion}
                 mensajeActividad={mensajeActividad}
