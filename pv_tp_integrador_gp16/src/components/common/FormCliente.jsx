@@ -1,5 +1,5 @@
 import { Container, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const FormCliente = ({ onClienteCreado }) => {
     const [nombre, setNombre] = useState('');
@@ -12,6 +12,16 @@ const FormCliente = ({ onClienteCreado }) => {
     const [error, setError] = useState(null);
     const [exito, setExito] = useState(null);
     const [erroresAtributo, setErroresAtributo] = useState({});
+
+    useEffect(() => {
+        if (!exito) return;
+
+        const timer = window.setTimeout(() => {
+            setExito(null);
+        }, 3000);
+
+        return () => window.clearTimeout(timer);
+    }, [exito]);
 
     const manejarCambio = (e) => {
         const { name, value } = e.target;
@@ -128,12 +138,13 @@ const FormCliente = ({ onClienteCreado }) => {
                     <h2>Registrar Nuevo Cliente</h2>
 
                     {exito && (
-                        <Alert variant="success" className="mt-3">
+                        <Alert variant="success" className="mt-3" role="alert">
                             {exito}
                         </Alert>
                     )}
 
                     {error && (
+
                         <Alert variant="danger" className="mt-3">
                             {error}
                         </Alert>
