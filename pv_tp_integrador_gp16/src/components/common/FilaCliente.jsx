@@ -1,8 +1,11 @@
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+
 const FilaCliente = ({ cliente, verDetalle, borrarCliente, esGerente }) => {
 
     const eliminarC = async () => {
         try {
-            await borrarCliente(cliente.id);
+            await borrarCliente(cliente);
             alert("Cliente eliminado correctamente");
         } catch (error) {
             alert(error.message);
@@ -10,30 +13,39 @@ const FilaCliente = ({ cliente, verDetalle, borrarCliente, esGerente }) => {
     };
 
     return (
-        <tr>
-            <td>{cliente.id}</td>
+        <TableRow>
 
-            <td>
+            <TableCell>{cliente.id}</TableCell>
+
+            <TableCell>
                 {cliente.name.firstname}
                 {" "}
                 {cliente.name.lastname}
-            </td>
+            </TableCell>
 
-            <td>{cliente.email}</td>
-            <td>{cliente.phone}</td>
-            <td>{cliente.address.city}</td>
+            <TableCell>{cliente.email}</TableCell>
 
-            <td>
+            <TableCell>{cliente.phone}</TableCell>
 
-                <button onClick={() => verDetalle(cliente.id)} >Ver Ficha Completa</button>
+            <TableCell>{cliente.address.city}</TableCell>
+
+            <TableCell>
+
+                <button onClick={() => verDetalle(cliente.id)}>
+                    Ver Ficha Completa
+                </button>
 
                 {
-                    esGerente && (<button onClick={eliminarC}>Eliminar Cliente de la Base de Datos</button>)
+                    esGerente && (
+                        <button onClick={eliminarC}>
+                            Eliminar Cliente de la Base de Datos
+                        </button>
+                    )
                 }
 
-            </td>
+            </TableCell>
 
-        </tr>
+        </TableRow>
     );
 };
 

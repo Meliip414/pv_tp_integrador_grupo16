@@ -1,3 +1,4 @@
+import axios from "axios";
 const clientesService = (() => {
 
     const URL = "https://fakestoreapi.com/users";
