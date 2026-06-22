@@ -88,7 +88,13 @@ const Clientes = () => {
             <h5>
                 Bienvenido al área de clientes,
             </h5>
-              <Row className="mb-3">
+                <FormCliente onClienteCreado={manejarClienteCreado} />
+            {error && (
+                <Alert variant="danger">
+                    {error}
+                </Alert>
+            )}
+            <Row className="mb-3">
                 <Col md={6}>
                     <Form.Control
                         type="text"
@@ -98,12 +104,6 @@ const Clientes = () => {
                     />
                 </Col>
             </Row>
-                <FormCliente onClienteCreado={manejarClienteCreado} />
-            {error && (
-                <Alert variant="danger">
-                    {error}
-                </Alert>
-            )}
 
             {loading ? (
                 <div className="text-center my-4">
