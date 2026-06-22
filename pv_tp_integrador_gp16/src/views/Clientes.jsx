@@ -6,8 +6,11 @@ import clientesService from '../services/clientesService';
 import FormCliente from '../components/common/FormCliente';
 import RegistroActividad from '../components/common/RegistroActividad';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import { AdminContext } from "../context/AdminContext";
 
 const Clientes = () => {
+const { adminActivo } = useContext(AdminContext);
      const [clientes, setClientes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -112,10 +115,11 @@ const Clientes = () => {
                 </div>
             ) : (
                 <ListaClientes
-                    clientes={clientesFiltrados}
-                    verDetalle={verDetalle}
-                    borrarCliente={borrarCliente}
-                />
+    clientes={clientesFiltrados}
+    verDetalle={verDetalle}
+    borrarCliente={borrarCliente}
+    esGerente={adminActivo?.sector === "Gerencia"}
+/>
             )}
             <RegistroActividad
                 actualizacion={actualizacion}
