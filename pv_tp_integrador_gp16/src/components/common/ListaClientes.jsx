@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import FilaCliente from './FilaCliente';
 
 const ListaClientes = ({
-    usuarios,
+    clientes = [],
     verDetalle,
     borrarCliente,
     esGerente
@@ -32,7 +32,7 @@ const ListaClientes = ({
                     </TableHead>
 
                     <TableBody>
-                        {usuarios.map(cliente => (
+                        {clientes.map(cliente => (
                             <FilaCliente
                                 key={cliente.id}
                                 cliente={cliente}
