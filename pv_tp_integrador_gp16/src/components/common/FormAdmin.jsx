@@ -77,7 +77,7 @@ const Login = () => {
                     <h2>Iniciar Sesion</h2>
                     <Form onSubmit={handleSubmit} noValidate>
                         <Form.Group className="mb-3">
-                            <Form.Label>DNI</Form.Label>
+                            <Form.Label>Nombre</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="admin"
