@@ -5,78 +5,79 @@ import { useEffect, useState } from 'react';
 import clientesService from '../services/clientesService';
 import FormCliente from '../components/common/FormCliente';
 import RegistroActividad from '../components/common/RegistroActividad';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
 
 const Clientes = () => {
-const { adminActivo } = useContext(AdminContext);
-     const [clientes, setClientes] = useState([]);
+    const { adminActivo } = useContext(AdminContext);
+    const [clientes, setClientes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [busqueda, setBusqueda] = useState("");
-     const [mensajeActividad, setMensajeActividad] = useState("");
+    const [mensajeActividad, setMensajeActividad] = useState("");
     const [actualizacion, setActualizacion] = useState(null);
     const navigate = useNavigate();
-    
-  const cargarClientes = async () => {
-            try {
-                setLoading(true);
-                setError(null);
 
-                const datos = await clientesService.listarTodosClientes();
-                setClientes(datos);
+    const cargarClientes = async () => {
+        try {
+            setLoading(true);
+            setError(null);
 
-            } catch (error) {
-                setError("Error al cargar clientes");
-            } finally {
-                setLoading(false);
-            }
-        };
+            const datos = await clientesService.listarTodosClientes();
+            setClientes(datos);
+
+        } catch (error) {
+            setError("Error al cargar clientes");
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-   
+
         cargarClientes();
 
     }, []);
     const borrarCliente = async (cliente) => {
 
-    try {
+        try {
 
-        await clientesService.eliminarClientes(cliente.id);
+            await clientesService.eliminarClientes(cliente.id);
 
-        setClientes(
-            clientes.filter(c => c.id !== cliente.id)
-        );
+            setClientes(
+                clientes.filter(c => c.id !== cliente.id)
+            );
 
-        registrarActividad(
-            `Cliente ${cliente.name.firstname} ${cliente.name.lastname} eliminado correctamente`
-        );
+            registrarActividad(
+                `Cliente ${cliente.name.firstname} ${cliente.name.lastname} eliminado correctamente`
+            );
 
-    } catch (error) {
+        } catch (error) {
 
-        setError(error.message);
+            setError(error.message);
 
-    }
+        }
 
-};
+    };
     const buscarCliente = (texto) => {
         setBusqueda(texto);
     };
 
     const verDetalle = (id) => {
-    console.log("Navegando a:", id);
-    navigate('/clientes/' + id);
-};
-   
+        console.log("Navegando a:", id);
+        navigate('/clientes/' + id);
+    };
 
-      const registrarActividad = (mensaje) => {
+
+    const registrarActividad = (mensaje) => {
         setMensajeActividad(mensaje);
         setActualizacion(new Date());
     };
 
     const manejarClienteCreado = (clienteCreado) => {
         registrarActividad(`Cliente ${clienteCreado.name.firstname} ${clienteCreado.name.lastname} agregado correctamente`);
-        cargarClientes();};
+        cargarClientes();
+    };
 
     const clientesFiltrados = clientes.filter((cliente) => (
         cliente.name.lastname.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -85,14 +86,14 @@ const { adminActivo } = useContext(AdminContext);
 
     return (
         <Container className="mt-4">
-             <Navegacion />
+            <Navegacion />
             <h2>
                 <Badge bg="success">Clientes</Badge>
             </h2>
             <h5>
                 Bienvenido al área de clientes,
             </h5>
-                <FormCliente onClienteCreado={manejarClienteCreado} />
+            <FormCliente onClienteCreado={manejarClienteCreado} />
             {error && (
                 <Alert variant="danger">
                     {error}
@@ -115,18 +116,21 @@ const { adminActivo } = useContext(AdminContext);
                 </div>
             ) : (
                 <ListaClientes
-    clientes={clientesFiltrados}
-    verDetalle={verDetalle}
-    borrarCliente={borrarCliente}
-    esGerente={adminActivo?.sector === "Gerencia"}
-/>
+                    clientes={clientesFiltrados}
+                    verDetalle={verDetalle}
+                    borrarCliente={borrarCliente}
+                    esGerente={adminActivo?.sector === "Gerencia"}
+                />
             )}
+            <div className="mt-3">
+                <Outlet />
+            </div>
             <RegistroActividad
                 actualizacion={actualizacion}
                 mensajeActividad={mensajeActividad}
             />
 
-        
+
 
         </Container>
     );
