@@ -69,6 +69,9 @@ const DetalleCliente = () => {
             <p className="mb-2"><strong>Número:</strong> {cliente.address?.number}</p>
             <p className="mb-3"><strong>Código Postal:</strong> {cliente.address?.zipcode}</p>
 
+            <p className="mb-3"><strong>Contraseña:</strong> {cliente.password ? cliente.password.replace(/./g, '*') : ''}</p>
+
+
             <Button
                 variant="outline-secondary"
                 size="sm"
