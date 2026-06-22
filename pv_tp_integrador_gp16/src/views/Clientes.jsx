@@ -35,7 +35,27 @@ const Clientes = () => {
         cargarClientes();
 
     }, []);
+    const borrarCliente = async (cliente) => {
 
+    try {
+
+        await clientesService.eliminarClientes(cliente.id);
+
+        setClientes(
+            clientes.filter(c => c.id !== cliente.id)
+        );
+
+        registrarActividad(
+            `Cliente ${cliente.name.firstname} ${cliente.name.lastname} eliminado correctamente`
+        );
+
+    } catch (error) {
+
+        setError(error.message);
+
+    }
+
+};
     const buscarCliente = (texto) => {
         setBusqueda(texto);
     };
@@ -61,6 +81,7 @@ const Clientes = () => {
 
     return (
         <Container className="mt-4">
+             <Navegacion />
             <h2>
                 <Badge bg="success">Clientes</Badge>
             </h2>
@@ -92,6 +113,7 @@ const Clientes = () => {
                 <ListaClientes
                     clientes={clientesFiltrados}
                     verDetalle={verDetalle}
+                    borrarCliente={borrarCliente}
                 />
             )}
             <RegistroActividad
@@ -99,7 +121,7 @@ const Clientes = () => {
                 mensajeActividad={mensajeActividad}
             />
 
-            {/* falta detalle */}
+        
 
         </Container>
     );
