@@ -10,73 +10,128 @@ import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
 
 const Clientes = () => {
-const { adminActivo } = useContext(AdminContext);
-     const [clientes, setClientes] = useState([]);
+    const { adminActivo } = useContext(AdminContext);
+    const [clientes, setClientes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [busqueda, setBusqueda] = useState("");
-     const [mensajeActividad, setMensajeActividad] = useState("");
+    const [mensajeActividad, setMensajeActividad] = useState("");
     const [actualizacion, setActualizacion] = useState(null);
     const navigate = useNavigate();
-    
-  const cargarClientes = async () => {
-            try {
-                setLoading(true);
-                setError(null);
 
-                const datos = await clientesService.listarTodosClientes();
-                setClientes(datos);
+    const cargarClientes = async () => {
+        try {
+            setLoading(true);
+            setError(null);
 
-            } catch (error) {
-                setError("Error al cargar clientes");
-            } finally {
-                setLoading(false);
-            }
-        };
+            const datos = await clientesService.listarTodosClientes();
+
+            const clientesLocales =
+                JSON.parse(localStorage.getItem("clientesAgregados")) || [];
+
+            const eliminados =
+                JSON.parse(localStorage.getItem("clientesEliminados")) || [];
+
+            const clientesApiFiltrados =
+                datos.filter(cliente => !eliminados.includes(cliente.id));
+            setClientes([
+                ...clientesApiFiltrados,
+                ...clientesLocales
+            ]);
+
+        } catch (error) {
+            setError("Error al cargar clientes");
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-   
+
         cargarClientes();
 
     }, []);
+
     const borrarCliente = async (cliente) => {
 
-    try {
+        try {
 
-        await clientesService.eliminarClientes(cliente.id);
+            await clientesService.eliminarClientes(cliente.id);
 
-        setClientes(
-            clientes.filter(c => c.id !== cliente.id)
-        );
+            setClientes(
+                clientes.filter(c => c.id !== cliente.id)
+            );
 
-        registrarActividad(
-            `Cliente ${cliente.name.firstname} ${cliente.name.lastname} eliminado correctamente`
-        );
+            const eliminados =
+                JSON.parse(localStorage.getItem("clientesEliminados")) || [];
 
-    } catch (error) {
+            localStorage.setItem(
+                "clientesEliminados",
+                JSON.stringify([
+                    ...eliminados,
+                    cliente.id
+                ])
+            );
 
-        setError(error.message);
+            const clientesLocales =
+                JSON.parse(localStorage.getItem("clientesAgregados")) || [];
 
-    }
+            const clientesLocalesActualizados =
+                clientesLocales.filter(c => c.id !== cliente.id);
 
-};
+            localStorage.setItem(
+                "clientesAgregados",
+                JSON.stringify(clientesLocalesActualizados)
+            );
+
+            registrarActividad(
+                `Cliente ${cliente.name.firstname} ${cliente.name.lastname} eliminado correctamente`
+            );
+
+        } catch (error) {
+
+            setError(error.message);
+
+        }
+
+    };
+
     const buscarCliente = (texto) => {
         setBusqueda(texto);
     };
 
     const verDetalle = (id) => {
-    console.log("Navegando a:", id);
-    navigate('/clientes/' + id);
-};
-   
+        console.log("Navegando a:", id);
+        navigate('/clientes/' + id);
+    };
 
-      const registrarActividad = (mensaje) => {
+
+    const registrarActividad = (mensaje) => {
         setMensajeActividad(mensaje);
         setActualizacion(new Date());
     };
 
     const manejarClienteCreado = (clienteCreado) => {
-        registrarActividad(`Cliente ${clienteCreado.name.firstname} ${clienteCreado.name.lastname} agregado correctamente`);
-        cargarClientes();};
+
+        setClientes(prev => [
+            ...prev,
+            clienteCreado
+        ]);
+
+        const clientesLocales =
+            JSON.parse(localStorage.getItem("clientesAgregados")) || [];
+
+        localStorage.setItem(
+            "clientesAgregados",
+            JSON.stringify([
+                ...clientesLocales,
+                clienteCreado
+            ])
+        );
+
+        registrarActividad(
+            "Cliente agregado correctamente"
+        );
+    };
 
     const clientesFiltrados = clientes.filter((cliente) => (
         cliente.name.lastname.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -85,14 +140,14 @@ const { adminActivo } = useContext(AdminContext);
 
     return (
         <Container className="mt-4">
-             <Navegacion />
+            <Navegacion />
             <h2>
                 <Badge bg="success">Clientes</Badge>
             </h2>
             <h5>
                 Bienvenido al área de clientes,
             </h5>
-                <FormCliente onClienteCreado={manejarClienteCreado} />
+            <FormCliente onClienteCreado={manejarClienteCreado} />
             {error && (
                 <Alert variant="danger">
                     {error}
@@ -115,18 +170,18 @@ const { adminActivo } = useContext(AdminContext);
                 </div>
             ) : (
                 <ListaClientes
-    clientes={clientesFiltrados}
-    verDetalle={verDetalle}
-    borrarCliente={borrarCliente}
-    esGerente={adminActivo?.sector === "Gerencia"}
-/>
+                    clientes={clientesFiltrados}
+                    verDetalle={verDetalle}
+                    borrarCliente={borrarCliente}
+                    esGerente={adminActivo?.sector === "Gerencia"}
+                />
             )}
             <RegistroActividad
                 actualizacion={actualizacion}
                 mensajeActividad={mensajeActividad}
             />
 
-        
+
 
         </Container>
     );
