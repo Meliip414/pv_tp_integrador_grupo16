@@ -23,9 +23,22 @@ const clientesService = (() => {
     }
 
 
+    const eliminarClientes = async (id) => {
+        try {
+            const eliminar = await axios.delete(`${URL}/${id}`);
+            return eliminar.data;
+
+        } catch (error) {
+            console.error("Error al eliminar:", error);
+            throw new Error(
+                error.response?.data?.message || "Error al eliminar cliente"
+            );
+        }
+    }
+
 
     return {
-        listarTodosClientes, agregarClientes
+        listarTodosClientes, agregarClientes, eliminarClientes
     };
 
 })();
