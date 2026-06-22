@@ -25,7 +25,19 @@ const Clientes = () => {
             setError(null);
 
             const datos = await clientesService.listarTodosClientes();
-            setClientes(datos);
+
+            const clientesLocales =
+                JSON.parse(localStorage.getItem("clientesAgregados")) || [];
+
+            const eliminados =
+                JSON.parse(localStorage.getItem("clientesEliminados")) || [];
+
+            const clientesApiFiltrados =
+                datos.filter(cliente => !eliminados.includes(cliente.id));
+            setClientes([
+                ...clientesApiFiltrados,
+                ...clientesLocales
+            ]);
 
         } catch (error) {
             setError("Error al cargar clientes");
@@ -38,6 +50,7 @@ const Clientes = () => {
         cargarClientes();
 
     }, []);
+
     const borrarCliente = async (cliente) => {
 
         try {
@@ -46,6 +59,28 @@ const Clientes = () => {
 
             setClientes(
                 clientes.filter(c => c.id !== cliente.id)
+            );
+
+            const eliminados =
+                JSON.parse(localStorage.getItem("clientesEliminados")) || [];
+
+            localStorage.setItem(
+                "clientesEliminados",
+                JSON.stringify([
+                    ...eliminados,
+                    cliente.id
+                ])
+            );
+
+            const clientesLocales =
+                JSON.parse(localStorage.getItem("clientesAgregados")) || [];
+
+            const clientesLocalesActualizados =
+                clientesLocales.filter(c => c.id !== cliente.id);
+
+            localStorage.setItem(
+                "clientesAgregados",
+                JSON.stringify(clientesLocalesActualizados)
             );
 
             registrarActividad(
@@ -59,6 +94,7 @@ const Clientes = () => {
         }
 
     };
+
     const buscarCliente = (texto) => {
         setBusqueda(texto);
     };
@@ -75,8 +111,26 @@ const Clientes = () => {
     };
 
     const manejarClienteCreado = (clienteCreado) => {
+
+        setClientes(prev => [
+            ...prev,
+            clienteCreado
+        ]);
+
+        const clientesLocales =
+            JSON.parse(localStorage.getItem("clientesAgregados")) || [];
+
+        localStorage.setItem(
+            "clientesAgregados",
+            JSON.stringify([
+                ...clientesLocales,
+                clienteCreado
+            ])
+        );
+
         registrarActividad(`Cliente ${clienteCreado.name.firstname} ${clienteCreado.name.lastname} agregado correctamente`);
         cargarClientes();
+        
     };
 
     const clientesFiltrados = clientes.filter((cliente) => (

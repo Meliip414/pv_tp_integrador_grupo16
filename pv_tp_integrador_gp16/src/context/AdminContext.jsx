@@ -6,25 +6,27 @@ export const AdminProvider = ({ children }) => {
   const [adminActivo, setAdminActivo] = useState(() => {
     const adminGuardado = localStorage.getItem("adminActivo");
 
-  if (adminGuardado) {
-    return JSON.parse(adminGuardado);
-  }
+    if (adminGuardado) {
+      return JSON.parse(adminGuardado);
+    }
 
-  return null;
-});
+    return null;
+  });
 
-useEffect(() => {
-  localStorage.setItem(
-    "adminActivo",
-    JSON.stringify(adminActivo)
-  );
-}, [adminActivo]);
+  useEffect(() => {
+    localStorage.setItem(
+      "adminActivo",
+      JSON.stringify(adminActivo)
+    );
+  }, [adminActivo]);
 
   const guardarSesion = (admin) => {
     setAdminActivo(admin);
   };
 
   const cerrarSesion = () => {
+    localStorage.removeItem("clientesAgregados");
+    localStorage.removeItem("clientesEliminados");
     setAdminActivo(null);
   };
 

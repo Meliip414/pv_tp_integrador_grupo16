@@ -1,7 +1,7 @@
 import { Container, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
 
-const FormCliente = () => {
+const FormCliente = ({ onClienteCreado }) => {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [email, setEmail] = useState('');
@@ -57,7 +57,7 @@ const FormCliente = () => {
         }
 
         setLoading(true);
-    
+
         try {
 
             const nuevoCliente = {
@@ -69,10 +69,10 @@ const FormCliente = () => {
                     lastname: apellido
                 },
                 address: {
-                    city: ciudad,        
+                    city: ciudad,
                     street: 'Calle Falsa',
-                    number: 123,           
-                    zipcode: '12345',      
+                    number: 123,
+                    zipcode: '12345',
                     geolocation: { lat: '-37.3159', long: '81.1496' }
                 },
                 phone: telefono
@@ -85,11 +85,33 @@ const FormCliente = () => {
                 },
                 body: JSON.stringify(nuevoCliente)
             });
-        
+
             const datosDevueltos = await respuesta.json();
             if (respuesta.ok) {
+
                 setExito(`Cliente creado con éxito. ID: ${datosDevueltos.id}`);
-                setNombre(''); setApellido(''); setEmail(''); setTelefono(''); setCiudad('');
+
+                const clientesLocales =
+                    JSON.parse(localStorage.getItem("clientesAgregados")) || [];
+
+                const maxIdApi = 10; // FakeStoreAPI tiene usuarios del 1 al 10
+
+                const maxIdLocal =
+                    clientesLocales.length > 0
+                        ? Math.max(...clientesLocales.map(c => c.id))
+                        : maxIdApi;
+
+                const nuevoId = maxIdLocal + 1;
+                onClienteCreado({
+                    ...nuevoCliente,
+                    id: Date.now()
+                });
+
+                setNombre('');
+                setApellido('');
+                setEmail('');
+                setTelefono('');
+                setCiudad('');
             }
 
         } catch (err) {
@@ -100,110 +122,110 @@ const FormCliente = () => {
     };
 
     return (
-    <Container className="mt-4">
-        <Card>
-            <Card.Body>
-                <h2>Registrar Nuevo Cliente</h2>
+        <Container className="mt-4">
+            <Card>
+                <Card.Body>
+                    <h2>Registrar Nuevo Cliente</h2>
 
-                {exito && (
-                    <Alert variant="success" className="mt-3">
-                        {exito}
-                    </Alert>
-                )}
+                    {exito && (
+                        <Alert variant="success" className="mt-3">
+                            {exito}
+                        </Alert>
+                    )}
 
-                {error && (
-                    <Alert variant="danger" className="mt-3">
-                        {error}
-                    </Alert>
-                )}
+                    {error && (
+                        <Alert variant="danger" className="mt-3">
+                            {error}
+                        </Alert>
+                    )}
 
-                <Form onSubmit={handleSubmit} noValidate>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="nombre"
-                            value={nombre}
-                            onChange={manejarCambio}
-                        />
-                        {erroresAtributo.nombre && (
-                            <p style={{color: 'red', fontSize: '0.875em'}}>
-                                {erroresAtributo.nombre}
-                            </p>
-                        )}
-                    </Form.Group>
+                    <Form onSubmit={handleSubmit} noValidate>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Nombre</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="nombre"
+                                value={nombre}
+                                onChange={manejarCambio}
+                            />
+                            {erroresAtributo.nombre && (
+                                <p style={{ color: 'red', fontSize: '0.875em' }}>
+                                    {erroresAtributo.nombre}
+                                </p>
+                            )}
+                        </Form.Group>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Apellido</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="apellido"
-                            value={apellido}
-                            onChange={manejarCambio}
-                        />
-                        {erroresAtributo.apellido && (
-                            <p style={{color: 'red', fontSize: '0.875em'}}>
-                                {erroresAtributo.apellido}
-                            </p>
-                        )}
-                    </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Apellido</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="apellido"
+                                value={apellido}
+                                onChange={manejarCambio}
+                            />
+                            {erroresAtributo.apellido && (
+                                <p style={{ color: 'red', fontSize: '0.875em' }}>
+                                    {erroresAtributo.apellido}
+                                </p>
+                            )}
+                        </Form.Group>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={manejarCambio}
-                        />
-                        {erroresAtributo.email && (
-                            <p style={{color: 'red', fontSize: '0.875em'}}>
-                                {erroresAtributo.email}
-                            </p>
-                        )}
-                    </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                value={email}
+                                onChange={manejarCambio}
+                            />
+                            {erroresAtributo.email && (
+                                <p style={{ color: 'red', fontSize: '0.875em' }}>
+                                    {erroresAtributo.email}
+                                </p>
+                            )}
+                        </Form.Group>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Teléfono</Form.Label>
-                        <Form.Control
-                            type="number"
-                            name="telefono"
-                            value={telefono}
-                            onChange={manejarCambio}
-                        />
-                        {erroresAtributo.telefono && (
-                            <p style={{color: 'red', fontSize: '0.875em'}}>
-                                {erroresAtributo.telefono}
-                            </p>
-                        )}
-                    </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Teléfono</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="telefono"
+                                value={telefono}
+                                onChange={manejarCambio}
+                            />
+                            {erroresAtributo.telefono && (
+                                <p style={{ color: 'red', fontSize: '0.875em' }}>
+                                    {erroresAtributo.telefono}
+                                </p>
+                            )}
+                        </Form.Group>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Ciudad</Form.Label>
-                        <Form.Control
-                            type="text" 
-                            name="ciudad"
-                            value={ciudad}
-                            onChange={manejarCambio}
-                        />
-                        {erroresAtributo.ciudad && (
-                            <p style={{color: 'red', fontSize: '0.875em'}}>
-                                {erroresAtributo.ciudad}
-                            </p>
-                        )}
-                    </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Ciudad</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="ciudad"
+                                value={ciudad}
+                                onChange={manejarCambio}
+                            />
+                            {erroresAtributo.ciudad && (
+                                <p style={{ color: 'red', fontSize: '0.875em' }}>
+                                    {erroresAtributo.ciudad}
+                                </p>
+                            )}
+                        </Form.Group>
 
-                    <Button
-                        type="submit"
-                        disabled={loading}
-                    >
-                        {loading ? 'Guardando...' : 'Guardar Cliente'}
-                    </Button>
-                </Form>
-            </Card.Body>
-        </Card>
-    </Container>
-);
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                        >
+                            {loading ? 'Guardando...' : 'Guardar Cliente'}
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
+    );
 
 };
 
