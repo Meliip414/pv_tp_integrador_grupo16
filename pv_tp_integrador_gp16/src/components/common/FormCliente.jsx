@@ -104,7 +104,7 @@ const FormCliente = ({ onClienteCreado }) => {
                 const nuevoId = maxIdLocal + 1;
                 onClienteCreado({
                     ...nuevoCliente,
-                    id: Date.now()
+                    id: datosDevueltos.id
                 });
 
                 setNombre('');
